@@ -18,9 +18,21 @@ fn main() {
     println!("from: {:?}", account.keypair.pubkey());
 
     let to = "EX1u9edUL77CoAZfPT9so9sUgoEmagjMc9zrussngAV6";
-    transfer_demo(&account, to, 123);
+
+    faucet_account(to);
+    
+    // transfer_demo(&account, to, 123);
 }
 
+#[allow(dead_code)]
+fn faucet_account(address: &str){
+    let to = Pubkey::from_str(address).unwrap();
+    let client = RpcClient::new(String::from("https://devnet.solana.com"));
+    let signature = client.request_airdrop(&to, 1000000).unwrap();
+    println!("faucet transaction: {:?}", signature);
+}
+
+#[allow(dead_code)]
 fn transfer_demo(account: &Account, to: &str, amount: u64){
     let to = Pubkey::from_str(to).unwrap();
 
